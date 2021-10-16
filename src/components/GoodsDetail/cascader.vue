@@ -1,0 +1,87 @@
+<template>
+  <div>
+    <el-cascader
+      v-model="value"
+      :options="options"
+      @change="handleChange"
+    ></el-cascader>
+  </div>
+</template>
+
+<script>
+export default {
+    name:'cascader',
+    data() {
+        return {
+            value:[],
+            options:[
+              {
+                value:'sichuan',
+                label:'四川省',
+                children:[
+                  {
+                    value:'chengdu',
+                    label:'成都市',
+                    children:[
+                      {
+                        value:'chenghua',
+                        label:'成华区'
+                      },
+                      {
+                        value:'qingyang',
+                        label:'青羊区'
+                      }
+                    ]
+                  },
+                  {
+                    value:'jianmenguan',
+                    label:'剑门关'
+                  }
+                ]
+              },
+              {
+                value:'shaanxi',
+                label:'陕西省',
+                children:[
+                  {
+                    value:'xian',
+                    label:'西安市',
+                    children:[
+                      {
+                        value:'yanta',
+                        label:'雁塔区'
+                      },
+                      {
+                        value:'beilin',
+                        label:'碑林区'
+                      }
+                    ]                    
+                  },
+                  {
+                    value:'xianyang',
+                    label:'咸阳市',
+                    children:[
+                      {
+                        value:'qindu',
+                        label:'秦都区'
+                      },
+                      {
+                        value:'weicheng',
+                        labei:'渭城区'
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+        };
+    },
+    methods:{
+        handleChange(){
+          this.$store.commit('setCascader',this.value)
+        }
+    }
+};
+</script>
+
+<style></style>
