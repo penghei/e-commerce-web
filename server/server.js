@@ -3,8 +3,17 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.json());
+
+app.use(bodyParser.json({
+  limit: '50mb' //nodejs 做为服务器，在传输内容或者上传文件时，系统默认大小为100kb,改为10M
+}));
+app.use(bodyParser.urlencoded({
+  limit: '50mb', //nodejs 做为服务器，在传输内容或者上传文件时，系统默认大小为100kb,改为10M
+  extended: true
+}));
+
 
 app
   .get("/userInfo",(req,res)=>{
