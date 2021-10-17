@@ -59,6 +59,9 @@ export default new vuex.Store({
         return obj.name !== data;
       })
       state.shoppingCar = [...newcar];
+    },
+    allPushShoppingCar(state,data){
+      state.shoppingCar = [...data]
     }
   },
 });

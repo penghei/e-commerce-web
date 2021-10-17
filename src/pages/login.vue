@@ -30,11 +30,24 @@ export default {
 </script>
 
 <style>
+body,html{
+  margin: 0;
+  padding: 0;
+}
 .hiddener{
     visibility: hidden;
 }
 .loginContent{
     position: relative;
-    top:20vh;
+    top:10vh;
+    min-width: 300px; 
+}
+#tab-0{
+  text-align: center;
+  width: 140px;
+}
+#tab-1{
+ text-align: center;
+  width: 140px;
 }
 </style>

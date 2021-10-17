@@ -5,7 +5,8 @@
               <el-image style="height:80px;width:80px" src="https://mall.cxmmao.com/img/github.a5ee684f.png" @click="routeTo(3)"></el-image>
           </el-menu-item>
           <el-menu-item index="2" class="listavatar">
-              <el-image style="height:80px;width:80px" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png" @click="routeTo(1)"></el-image>
+              <img style="height:80px;width:80px" :src="avatarUrl" v-if="avatarUrl !== ''" @click="routeTo(1)">
+              <img style="height:80px;width:80px" v-else @click="routeTo(1)" src="https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png"/>
           </el-menu-item>
           <el-menu-item index="3" class="shoppingCar">
               <el-image style="height:80px;width:80px" src="https://mall.cxmmao.com/img/cart.db98cbfe.svg" @click="routeTo(2)"></el-image>
@@ -15,11 +16,12 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name:'navList',
     data() {
         return {
-            
+            avatarUrl:''
         };
     },
     methods:{
@@ -38,6 +40,15 @@ export default {
                     break;
             }
         }
+    },
+    mounted(){
+        axios
+            .get('/api/userInfo')
+            .then(res=>{
+                let userInfo = res.data;
+                this.avatarUrl = userInfo.privacy.avatar;
+            })
+            .catch(err=>console.log(err))
     }
 }
 </script>

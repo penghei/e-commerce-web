@@ -40,6 +40,7 @@
 
 <script>
 import Pubsub from 'pubsub-js'
+import axios from 'axios';
 export default {
   name: "shoppingCarList",
   data() {
@@ -76,6 +77,12 @@ export default {
     if (this.list.length === 0) {
       this.ifHave = false;
     }
+    axios
+      .post('/api/shoppingcar',this.list)
+      .then(res=>{
+        if(res.data === 'error'){this.$message({type:'error',message:"登录异常"});return}
+      })
+      .catch(err=>{this.$message({type:'error',message:err})})
   },
 };
 </script>

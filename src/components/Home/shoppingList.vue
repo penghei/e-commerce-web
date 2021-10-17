@@ -4,7 +4,7 @@
       <el-button @click="selectGoods" type="danger">筛选</el-button>
     </div>
     <div v-for="good in goods" :key="good.id" class="inner">
-      <el-card class="goodsCard" v-show="good.ifSelect">
+      <el-card class="goodsCard" v-show="good.ifSelect" shadow="hover">
         <el-image
           :src="good.picUrl"
           fit="fill"
@@ -81,7 +81,15 @@ export default {
     };
   },
   methods: {
-    getGoods() {},
+    getGoods(name,price) {
+      let goodsObj = {
+        name,
+        price,
+        id:uuid.generate(),
+        ifSelect:true
+      }
+      this.goods.push(goodsObj);
+    },
     addToShoppingCar() {},
     goodDetail(id,name,price,picUrl) {
       this.$router.push({

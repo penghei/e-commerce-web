@@ -3,7 +3,7 @@
     <div class="content">
       <nav-list></nav-list>
       <carousel></carousel>
-      <el-breadcrumb separator=">">
+      <el-breadcrumb separator=">" style="font-size:large">
         <el-breadcrumb-item :to="{ path: '/home' }" replace
           >首页</el-breadcrumb-item
         >
@@ -25,6 +25,7 @@
 </template>
 
 <script>
+// import axios from 'axios';
 import Carousel from "../../components/Home/carousel.vue";
 import CheckBox from "../../components/Home/checkBox.vue";
 import myFooter from "../../components/Home/footer.vue";
@@ -33,6 +34,9 @@ import ShoppingList from "../../components/Home/shoppingList.vue";
 export default {
   name: "home",
   components: { NavList, Carousel, ShoppingList, CheckBox, myFooter },
+  mounted(){
+    
+  }
 };
 </script>
 

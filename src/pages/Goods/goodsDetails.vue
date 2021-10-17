@@ -3,7 +3,7 @@
       <div class="content">
         <nav-list></nav-list>
         <carousel></carousel>
-        <el-breadcrumb separator=">">
+        <el-breadcrumb separator=">" style="font-size:large">
           <el-breadcrumb-item :to="{ path: '/home' }" replace>
             首页
           </el-breadcrumb-item>

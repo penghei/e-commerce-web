@@ -13,8 +13,8 @@
           <el-input v-model="userNameMade" />
         </el-form-item>
         <el-form-item label="性别">
-          <el-radio v-model="sex" label="man">男</el-radio>
-          <el-radio v-model="sex" label="woman">女</el-radio>
+          <el-radio v-model="sex" label="男">男</el-radio>
+          <el-radio v-model="sex" label="女">女</el-radio>
         </el-form-item>
         <el-form-item label="年龄">
           <el-input-number
@@ -35,7 +35,6 @@
             <img v-if="imageUrl" :src="imageUrl" class="avatar" />
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
-          <el-button type="danger">确定更换</el-button>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -46,9 +45,10 @@
 </template>
 
 <script>
-import ps from "pubsub-js";
+import axios from 'axios';
 export default {
   name: "userDetail",
+  props:['setUserDetail'],
   data() {
     return {
       dialogVisible: false,
@@ -65,14 +65,27 @@ export default {
     },
     beforeAvatarUpload(file) {
       console.log(file);
+      let reader = new FileReader();
+      reader.readAsDataURL(file)
+      reader.onload = ()=>{
+        let pic = {
+          picBase:reader.result
+        }
+        axios
+          .post('/api/avatar',pic)
+          .then(res=>{
+            if(res.data === 'success'){
+              this.imageUrl = reader.result
+            }
+          })
+          .catch(err=>{console.log(err)})
+      }
     },
     finishEdit() {
-      
       let userInfo = {
         name: this.userNameMade,
-        age: this.age,
+        age: this.age.toString(),
         sex: this.sex,
-        avatarUrl: this.imageUrl,
       };
       if (userInfo.name === "") {
         this.$message({
@@ -87,10 +100,27 @@ export default {
         });
         return;
       }
-      this.dialogVisible = false;
-      ps.publish("userInfo", userInfo);
+      axios
+        .post('/api/changeUserInfo',userInfo)
+        .then(res=>{
+          if(res.data==='success'){
+            this.dialogVisible = false;
+            this.$message({
+              type:"success",
+              message:"变更成功"
+            })
+          }else{
+            this.$message({
+              type:"error",
+              message:"变更失败"
+            })
+          }
+        })
+        .catch(err=>console.log(err))
+      this.setUserDetail();
     },
   },
+  
 };
 </script>
 
@@ -118,7 +148,5 @@ export default {
   height: 178px;
   display: block;
 }
-.editBtn {
-  height: 20vh;
-}
+
 </style>
