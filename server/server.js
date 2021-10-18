@@ -6,60 +6,101 @@ const app = express();
 // app.use(bodyParser.urlencoded({ extended: false }));
 // app.use(bodyParser.json());
 
-app.use(bodyParser.json({
-  limit: '50mb' //nodejs 做为服务器，在传输内容或者上传文件时，系统默认大小为100kb,改为10M
-}));
-app.use(bodyParser.urlencoded({
-  limit: '50mb', //nodejs 做为服务器，在传输内容或者上传文件时，系统默认大小为100kb,改为10M
-  extended: true
-}));
-
+app.use(
+  bodyParser.json({
+    limit: "50mb", //nodejs 做为服务器，在传输内容或者上传文件时，系统默认大小为100kb,改为10M
+  })
+);
+app.use(
+  bodyParser.urlencoded({
+    limit: "50mb", //nodejs 做为服务器，在传输内容或者上传文件时，系统默认大小为100kb,改为10M
+    extended: true,
+  })
+);
 
 app
-  .get("/userInfo",(req,res)=>{
-    console.log("获取用户信息")
-    fs.readFile("database.json","utf8",(err,data)=>{
-      if(err) console.log(err)
+  .get("/userInfo", (req, res) => {
+    console.log("获取用户信息");
+    fs.readFile("database.json", "utf8", (err, data) => {
+      if (err) console.log(err);
       let list = JSON.parse(data);
-      if(list !== [] || list !== [null]){
-        let foundUser = list.find(obj=>{
+      if (list !== [] || list !== [null]) {
+        let foundUser = list.find((obj) => {
           return obj.isOnline === true;
-        })
-        if(foundUser !== undefined){
+        });
+        if (foundUser !== undefined) {
           res.end(JSON.stringify(foundUser));
-        }else{
-          res.end('notfound')
+        } else {
+          res.end("notfound");
         }
       }
-    })
+    });
   })
-  .get("/quit",(req,res)=>{
-    console.log("退出登录");
-    fs.readFile("database.json","utf8",(err,data)=>{
-      if(err) console.log(err)
+  .get("/userCode", (req, res) => {
+    console.log("获取用户密码");
+    fs.readFile("database.json", "utf8", (err, data) => {
+      if (err) throw err;
       let list = JSON.parse(data);
-      if(list !== [] || list !== [null]){
-        let foundUser = list.find(obj=>{
+      if (list !== [] || list !== [null]) {
+        let foundUser = list.find((obj) => {
           return obj.isOnline === true;
-        })
-        if(foundUser !== undefined){//下线
+        });
+        if (foundUser !== undefined) {
+          let userCode = {
+            code: foundUser.account.code,
+            payCode: foundUser.shopping.payCode,
+            money: foundUser.shopping.money,
+          };
+          res.end(JSON.stringify(userCode));
+        } else {
+          res.end("notfound");
+        }
+      } else {
+        res.end("nouser");
+      }
+    });
+  })
+  .get("/quit", (req, res) => {
+    console.log("退出登录");
+    fs.readFile("database.json", "utf8", (err, data) => {
+      if (err) console.log(err);
+      let list = JSON.parse(data);
+      if (list !== [] || list !== [null]) {
+        let foundUser = list.find((obj) => {
+          return obj.isOnline === true;
+        });
+        if (foundUser !== undefined) {
+          //下线
           foundUser.isOnline = false;
-          console.log(foundUser.isOnline,'quit')
-          fs.writeFile("database.json",JSON.stringify(list),(err)=>{
-            if(err) throw err;
+          console.log(foundUser.isOnline, "quit");
+          fs.writeFile("database.json", JSON.stringify(list), (err) => {
+            if (err) throw err;
             console.log("已写入");
             res.end("success");
-          }) 
-        }else{
-          res.end('notfound')
+          });
+        } else {
+          res.end("notfound");
         }
-        let ifOnline = list.find(obj=>{//再次检查
+        let ifOnline = list.find((obj) => {
+          //再次检查
           return obj.isOnline === true;
-        })
-        if(ifOnline !== undefined){
-          console.log("多个账号在线,登录异常")
+        });
+        if (ifOnline !== undefined) {
+          console.log("多个账号在线,登录异常");
           ifOnline.isOnline = false;
         }
+      }
+    });
+  })
+  .get('/goodsDetail',(req,res)=>{
+    console.log("获取商品图片链接")
+    fs.readFile('picbase.json','utf8',(err,data)=>{
+      if(err) console.log(err)
+      let piclist = JSON.parse(data)
+      if(piclist !== [] || piclist !== [null]){
+        res.end(JSON.stringify(piclist))
+      }else{
+        res.end('notfound')
       }
     })
   })
@@ -83,12 +124,12 @@ app
           if (foundUser.account.code !== userinfo.account.code) {
             res.end("codewrong");
           } else {
-            foundUser.isOnline = true
-            fs.writeFile("database.json",JSON.stringify(userList),(err)=>{
-              if(err) throw err;
+            foundUser.isOnline = true;
+            fs.writeFile("database.json", JSON.stringify(userList), (err) => {
+              if (err) throw err;
               console.log("已写入");
               res.end("success");
-            }) 
+            });
           }
         }
       }
@@ -126,81 +167,122 @@ app
       }
     });
   })
-  .post('/shoppingCar',(req,res)=>{
-    console.log('购物车绑定请求')
+  .post("/shoppingCar", (req, res) => {
+    console.log("购物车绑定请求");
     let car = req.body;
     // let carList = []
-    fs.readFile('database.json','utf8',(err,data)=>{
-      if(err) console.log(err)
-      let list = JSON.parse(data)
-      if(list === [] || list === [null]){
+    fs.readFile("database.json", "utf8", (err, data) => {
+      if (err) console.log(err);
+      let list = JSON.parse(data);
+      if (list === [] || list === [null]) {
         return;
-      }else{
-        let onlineUser = list.find(obj=>{
-          return obj.isOnline === true
-        })
-        if(onlineUser !== undefined){//添加进购物车
-          onlineUser.shopping.shoppingCar = [...car]
-          fs.writeFile("database.json",JSON.stringify(list),(err)=>{
-            if(err) throw err;
+      } else {
+        let onlineUser = list.find((obj) => {
+          return obj.isOnline === true;
+        });
+        if (onlineUser !== undefined) {
+          //添加进购物车
+          onlineUser.shopping.shoppingCar = [...car];
+          fs.writeFile("database.json", JSON.stringify(list), (err) => {
+            if (err) throw err;
             console.log("已写入");
             res.end("success");
-          }) 
-        }else{
-          res.end('error')
-          console.log("多重在线,登录异常")
+          });
+        } else {
+          res.end("error");
+          console.log("多重在线,登录异常");
         }
       }
-    })
+    });
   })
-  .post('/avatar',(req,res)=>{
-    console.log('获取用户头像')
-    let picBase64 = req.body.picBase
-    fs.readFile("database.json","utf8",(err,data)=>{
-      if(err) console.log(err)
+  .post("/avatar", (req, res) => {
+    console.log("获取用户头像");
+    let picBase64 = req.body.picBase;
+    fs.readFile("database.json", "utf8", (err, data) => {
+      if (err) console.log(err);
       let list = JSON.parse(data);
-      if(list !== [] || list !== [null]){
-        let foundUser = list.find(obj=>{
+      if (list !== [] || list !== [null]) {
+        let foundUser = list.find((obj) => {
           return obj.isOnline === true;
-        })
-        if(foundUser !== undefined){//更换头像
+        });
+        if (foundUser !== undefined) {
+          //更换头像
           foundUser.privacy.avatar = picBase64;
-          fs.writeFile("database.json",JSON.stringify(list),(err)=>{
-            if(err) throw err;
+          fs.writeFile("database.json", JSON.stringify(list), (err) => {
+            if (err) throw err;
             console.log("已更换头像");
             res.end("success");
-          }) 
-        }else{
-          res.end('notfound')
+          });
+        } else {
+          res.end("notfound");
         }
       }
-    })
+    });
   })
-  .post('/changeUserInfo',(req,res)=>{
-    console.log("更改用户信息")
-    let userInfo = req.body
-    fs.readFile('database.json',"utf8",(err,data)=>{
-      if(err) throw err;
-      let list = JSON.parse(data)
-      if(list !== [] || list !== [null]){
-        let foundUser = list.find(obj=>{
+  .post("/changeUserInfo", (req, res) => {
+    console.log("更改用户信息");
+    let userInfo = req.body;
+    fs.readFile("database.json", "utf8", (err, data) => {
+      if (err) throw err;
+      let list = JSON.parse(data);
+      if (list !== [] || list !== [null]) {
+        let foundUser = list.find((obj) => {
           return obj.isOnline === true;
-        })
-        if(foundUser !== undefined){//更换头像
+        });
+        if (foundUser !== undefined) {
+          //更换头像
           foundUser.privacy.sex = userInfo.sex;
           foundUser.privacy.age = userInfo.age;
           foundUser.account.name = userInfo.name;
-          fs.writeFile("database.json",JSON.stringify(list),(err)=>{
-            if(err) throw err;
-            console.log("已更换头像");
+          fs.writeFile("database.json", JSON.stringify(list), (err) => {
+            if (err) throw err;
+            console.log("已修改信息");
             res.end("success");
-          }) 
-        }else{
-          res.end('notfound')
+          });
+        } else {
+          res.end("notfound");
         }
       }
-    })
+    });
   })
+  .post("/changeCode", (req, res) => {
+    console.log("更改用户密码");
+    let userInfo = req.body;
+    fs.readFile("database.json", "utf8", (err, data) => {
+      if (err) throw err;
+      let list = JSON.parse(data);
+      if (list !== [] || list !== [null]) {
+        let foundUser = list.find((obj) => {
+          return obj.isOnline === true;
+        });
+        if (foundUser !== undefined) {
+          switch (userInfo.type) {
+            case 1:
+              foundUser.account.code = userInfo.code
+              break;
+            case 2:
+              foundUser.shopping.payCode = String(userInfo.code)
+              console.log(foundUser.shopping.code)
+              break;
+            case 3:
+              foundUser.shopping.money += Number(userInfo.code)
+              console.log(userInfo.code)
+              break;
+            default:
+              break;
+          }
+          fs.writeFile("database.json", JSON.stringify(list), (err) => {
+            if (err) throw err;
+            console.log("已修改密码");
+            res.end("success");
+          });
+        } else {
+          res.end("notfound");
+        }
+      }
+    });
+  })
+  
   .listen(7999, () => {
     console.log("服务器启动");
   });

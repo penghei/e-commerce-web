@@ -1,11 +1,11 @@
 <template>
   <div>
-    <el-card>
+    <el-card :style="'width:'+cardWidth+'px'">
       <el-row>
-        <el-col :span="10">
-          <img :src="picurl" style="height:200px"/>
+        <el-col :span="10"  class="imgPic">
+          <img :src="picurl" style="height:200px;max-width:300px"/>
         </el-col>
-        <el-col :span="14">
+        <el-col :span="14" class="goodsBlock">
           <div class="detail">
             <h3>{{ goodsName }}</h3>
             <p>价格:</p>
@@ -43,6 +43,7 @@ export default {
       goodsnum: 1,
       picurl: "",
       goodsList: [],
+      cardWidth:1000
     };
   },
   methods: {
@@ -67,6 +68,10 @@ export default {
       this.$store.commit('setSelectedGoodsNum',this.goodsnum );
       this.goodsnum = 1;
     },
+    changeCarWidth(width){
+      if(width > 1000)
+      this.cardWidth = width - 700
+    }
   },
   mounted() {
     this.goodsList = [...this.$store.state.goodsList];
@@ -78,6 +83,14 @@ export default {
       this.goodsPrice = selectedGoods.price;
       this.picurl = selectedGoods.picUrl;
     }
+    window.onresize = () => {
+      return (() => {
+        // 重新赋值最新窗口数据
+        let screenWidth = document.body.clientWidth;
+        // this.screenHeight = document.body.clientHeight;
+        this.changeCarWidth(screenWidth);
+      })();
+    };
   },
 };
 </script>
@@ -100,6 +113,11 @@ export default {
 .detail>span{
   font-size: 5px;
   font-weight: 200;
+}
+@media screen and (max-width:1500px) {
+  .goodsBlock{
+    width: 500px;
+  }
 }
 
 </style>

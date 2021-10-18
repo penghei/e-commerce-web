@@ -14,7 +14,9 @@
         />
       </div>
       <div>
-        <el-button type="danger" @click="getCommitValue">发送评论</el-button>
+        <el-button type="danger" @click="getCommitValue" class="Btn"
+          >发送评论</el-button
+        >
       </div>
       <br />
       <div v-for="commit in commitList" :key="commit.id">
@@ -38,6 +40,7 @@
 
 <script>
 import uuid from "uuidjs";
+import axios from 'axios';
 export default {
   name: "commits",
   data() {
@@ -47,9 +50,7 @@ export default {
       rateValue: 0,
       commitValue: "",
       IfEmpty: true,
-      commitList: [
-        
-      ],
+      commitList: [],
     };
   },
   methods: {
@@ -107,18 +108,22 @@ export default {
   },
   mounted() {
     if (localStorage.getItem("commits") !== null) {
-      let gettedCommits = JSON.parse(localStorage.getItem("commits"))
-      let tempObj = gettedCommits.find(obj=>{
-        return obj.goodsName === this.$store.state.selectedGoods.name
-      })
-      if(tempObj !== undefined){
+      let gettedCommits = JSON.parse(localStorage.getItem("commits"));
+      let tempObj = gettedCommits.find((obj) => {
+        return obj.goodsName === this.$store.state.selectedGoods.name;
+      });
+      if (tempObj !== undefined) {
         this.commitList = tempObj.commits;
       }
-      
     }
     if (this.commitList.length === 0) this.IfEmpty = false;
     else this.IfEmpty = true;
-    this.username = this.$store.state.username;
+    axios
+      .get('/api/userInfo')
+      .then(res=>{
+        this.username = res.data.account.name
+      })
+      .catch(err=>{console.log(err)})
     this.temUserName = JSON.parse(localStorage.getItem("Users"))[0].userName;
   },
   destroyed() {
@@ -127,16 +132,16 @@ export default {
       goodsName: this.$store.state.selectedGoods.name,
     };
     let oldCommits = JSON.parse(localStorage.getItem("commits")) || [];
-    if(oldCommits.length !== 0){
-      let addObj = oldCommits.find(obj=>{
+    if (oldCommits.length !== 0) {
+      let addObj = oldCommits.find((obj) => {
         return obj.goodsName === this.$store.state.selectedGoods.name;
-      })
-      if(addObj !== undefined){
+      });
+      if (addObj !== undefined) {
         addObj.commits = [...this.commitList];
-      }else{
+      } else {
         oldCommits.push(commits);
       }
-    }else{
+    } else {
       oldCommits.push(commits);
     }
     localStorage.setItem("commits", JSON.stringify(oldCommits));
@@ -153,5 +158,10 @@ export default {
   font-weight: 100;
   font-size: 20px;
   margin: 0;
+}
+@media screen and (max-width: 1050px) {
+  .Btn {
+    display: none;
+  }
 }
 </style>

@@ -36,4 +36,9 @@ export default {
 .main {
   width: 100%;
 }
+@media screen and (max-width : 600px) {
+  .main{
+    display: none;
+  }
+}
 </style>

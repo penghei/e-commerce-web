@@ -1,8 +1,6 @@
 <template>
   <div class="main">
       <div class="content">
-        <nav-list></nav-list>
-        <carousel></carousel>
         <el-breadcrumb separator=">" style="font-size:large">
           <el-breadcrumb-item :to="{ path: '/home' }" replace>
             首页
@@ -19,7 +17,9 @@
                   <commits></commits> -->
                   <router-view></router-view>
               </el-col>
-              <el-col :span="5" style="visibility:hidden">a</el-col>
+              <el-col :span="5" >
+                <recommand></recommand>
+              </el-col>
           </el-row>
       </div> 
       <div class="footer">
@@ -32,13 +32,14 @@
 // import Commits from '../../components/GoodsDetail/commits.vue';
 // import GoodsBlock from '../../components/GoodsDetail/goodsBlock.vue';
 
-import carousel from "../../components/Home/carousel.vue";
+
 import Footer from '../../components/Home/footer.vue';
-import NavList from "../../components/Home/navList.vue";
+import Recommand from '../../components/Home/recommand.vue';
+
 
 export default {
   name: "goodsDetails",
-  components: { carousel, NavList, Footer},
+  components: { Footer, Recommand},
   data() {
     return {
       goodsId:'',

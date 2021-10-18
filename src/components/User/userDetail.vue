@@ -5,6 +5,7 @@
       @click="dialogVisible = true"
       class="editBtn"
       size="large"
+      style="margin-top:10px"
       >编辑信息</el-button
     >
     <el-dialog title="编辑个人信息" :visible.sync="dialogVisible">

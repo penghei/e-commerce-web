@@ -109,7 +109,7 @@ export default {
     });
   },
   destroyed() {
-    this.$store.commit("emptySelectedGoods");
+    
     this.$store.commit("emptyCascaderValue");
   },
 };

@@ -1,8 +1,6 @@
 <template>
   <div class="main">
     <div class="content">
-      <nav-list></nav-list>
-      <carousel></carousel>
       <el-breadcrumb separator=">" style="font-size:large"> 
         <el-breadcrumb-item :to="{ path: '/home' }" replace
           >首页</el-breadcrumb-item
@@ -27,13 +25,11 @@
 </template>
 
 <script>
-import Carousel from "../../components/Home/carousel.vue";
 import myfooter from '../../components/Home/footer.vue';
-import NavList from "../../components/Home/navList.vue";
 import ShoppingCarlist from "../../components/ShoppingCar/shoppingCarlist.vue";
 export default {
   name: "shoppingCar",
-  components: { NavList, Carousel, ShoppingCarlist, myfooter },
+  components: { ShoppingCarlist, myfooter },
 };
 </script>
 

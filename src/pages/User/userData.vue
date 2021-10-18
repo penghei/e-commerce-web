@@ -1,8 +1,6 @@
 <template>
   <div class="main">
     <div class="content">
-      <nav-list></nav-list>
-      <carousel></carousel>
       <el-breadcrumb separator=">" style="font-size:large">
         <el-breadcrumb-item :to="{ path: '/home' }" replace
           >首页</el-breadcrumb-item
@@ -18,33 +16,36 @@
         <el-col :span="16">
           <el-card>
             <div class="useravatar">
-              <img
-                :src="avatarUrl"
-              />
+              <img :src="avatarUrl" style="width:300px"/>
             </div>
             <el-card shadow="hover" class="userDetail">
-              <p>用户名:{{ userName}}</p>
-              <p>性别:{{ userSex}}</p>
-              <p>年龄:{{ userAge}}</p>
+              <p>用户名:{{ userName }}</p>
+              <p>性别:{{ userSex }}</p>
+              <p>年龄:{{ userAge }}</p>
               <span>
-               爱好：
-                <el-tag
-                  v-for="tag in Tags"
-                  :key="tag.name"
-                  :type="tag.type"
-                >
+                爱好：
+                <el-tag v-for="tag in Tags" :key="tag.name" :type="tag.type">
                   {{ tag.name }}
                 </el-tag>
               </span>
-            <br>
-            <el-divider></el-divider>
-              <span>
-                <el-button type="warning" size="mini" @click="changeAccount">更改账号信息</el-button>
-              </span>
+              <br />
+              <el-divider></el-divider>
+              <div class="btns">
+                <user-account></user-account>
+                <user-detail :setUserDetail="setUserDetail"></user-detail>
+                <div>
+                  <el-button
+                    type="danger"
+                    @click="quitAccount"
+                    style="width:40%;margin-top:10px"
+                    >退出登录</el-button
+                  >
+                </div>
+              </div>
             </el-card>
           </el-card>
         </el-col>
-        <el-col :span="4"><user-detail :setUserDetail="setUserDetail"></user-detail><br/><el-button type="danger" @click="quitAccount">退出登录</el-button></el-col>
+        <el-col :span="4"></el-col>
       </el-row>
     </div>
     <div class="footer">
@@ -55,78 +56,70 @@
 
 <script>
 import userDetail from "../../components/User/userDetail.vue";
-import Carousel from "../../components/Home/carousel.vue";
+
 import myFooter from "../../components/Home/footer.vue";
-import NavList from "../../components/Home/navList.vue";
+
 // import ps from 'pubsub-js'
-import axios from 'axios';
+import axios from "axios";
+import UserAccount from "../../components/User/userAccount.vue";
 // import Pubsub from "pubsub-js"
 export default {
-  components: { userDetail, NavList, Carousel, myFooter },
+  components: { userDetail, myFooter, UserAccount },
   data() {
     return {
       userName: "",
       userSex: "",
-      userAge:"",
-      avatarUrl:'',
+      userAge: "",
+      avatarUrl: "",
       Tags: [
-        {name:"吃饭",type:"success"},
-        {name:"睡觉",type:"waring"},
-        {name:"敲代码",type:"danger"}
+        { name: "吃饭", type: "success" },
+        { name: "睡觉", type: "waring" },
+        { name: "敲代码", type: "danger" },
       ],
-      defaults:{
-        name:'星野',
-        sex:'男',
-        age:'19'
-      }
+      defaults: {
+        name: "星野",
+        sex: "男",
+        age: "19",
+      },
     };
   },
   methods: {
     setUserDetail() {
-      console.log(1)
+      console.log(1);
       axios
-        .get('/api/userInfo')
-        .then(res=>{
+        .get("/api/userInfo")
+        .then((res) => {
           let userObj = res.data;
           this.userName = userObj.account.name;
-          this.userSex = userObj.privacy.sex || '未设置'
-          this.userAge = userObj.privacy.age || '未设置'
-
+          this.userSex = userObj.privacy.sex || "未设置";
+          this.userAge = userObj.privacy.age || "未设置";
+          this.avatarUrl = userObj.privacy.avatar
         })
-        .catch(err=>{
-          console.log(err)
-        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    quitAccount(){
+    quitAccount() {
       axios
-        .get('/api/quit')
-        .then(res=>{
-          if(res.data === 'notfound'){
-            this.$message({type:"error",message:"登录异常,多个账号同时在线"})
-          }else{
-            this.$router.push('/login')
+        .get("/api/quit")
+        .then((res) => {
+          if (res.data === "notfound") {
+            this.$message({
+              type: "error",
+              message: "登录异常,多个账号同时在线",
+            });
+          } else {
+            this.$router.push("/login");
           }
         })
-        .catch(err=>{
-          console.log(err)
-        })
-      
+        .catch((err) => {
+          console.log(err);
+        });
     },
-    changeAccount(){
-
-    }
+    changeAccount() {},
   },
   mounted() {
-    // if (localStorage.getItem("Users") !== null) {
-    //   let users = JSON.parse(localStorage.getItem("Users"));
-    //   this.userName = users[0].userName;
-    // }
-    // ps.subscribe('userInfo',(_,data)=>{
-    //   this.userName = data.name;
-    //   this.sex = data.sex
-    //   this.age = data.age;
-    //   this.avatarUrl = data.avatarUrl;
-    // })
+    
     this.setUserDetail();
   },
 };
@@ -140,5 +133,11 @@ export default {
   color: orange;
   font-weight: 100;
   font-size: 20px;
+}
+.btns {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  
 }
 </style>
