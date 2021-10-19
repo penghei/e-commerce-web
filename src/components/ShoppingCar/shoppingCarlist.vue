@@ -27,7 +27,7 @@
           <el-col :span="6" style="text-align:center" class="btn">
             <div >
               <el-button type="danger" @click="deletGoods(good.name)">删除</el-button>
-              <el-button type="danger" @click="orderGoods(good.name)">立即购买</el-button>
+              <el-button type="danger" @click="orderGoods(good.name,good.number)">立即购买</el-button>
             </div>
           </el-col>
         </el-row>
@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import Pubsub from 'pubsub-js'
 import axios from 'axios';
 export default {
   name: "shoppingCarList",
@@ -59,15 +58,16 @@ export default {
         this.ifHave = false
       }
     },
-    orderGoods(name){
-      this.$router.push('/home/goodsdetail/address');
+    orderGoods(name,number){
       let selectedGoods = this.list.find(obj => {
         return obj.name === name;
       })
-      Pubsub.publish('goodsFromCar',selectedGoods)
+      selectedGoods["number"] = number
+      console.log(selectedGoods)
+      this.$store.commit('setSelectedGoodsInfo',selectedGoods)
       // this.$store.commit('selectFromCar',selectedGoods);
       this.deletGoods(name);
-
+      this.$router.push('/home/goodsdetail/address');
     }
   },
   mounted() {

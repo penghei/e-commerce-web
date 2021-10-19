@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import Pubsub from "pubsub-js";
+
 import cascader from "./cascader.vue";
 import OrderGoods from "./orderGoods.vue";
 export default {
@@ -79,6 +79,7 @@ export default {
         return;
       }
       this.$router.push("/home/goodsdetail/parchase");
+      this.$store.commit('setSelectedGoodsInfo',this.selectedGoods)
     },
     exam1() {
       let num = this.form.phone;
@@ -103,10 +104,7 @@ export default {
     if (this.$store.state.selectedGoods !== {}) {
       this.selectedGoods = { ...this.$store.state.selectedGoods };
     }
-    Pubsub.subscribe("goodsFromCar", (_, data) => {
-      console.log(data)
-      this.selectedGoods = data;
-    });
+
   },
   destroyed() {
     

@@ -12,19 +12,27 @@
     </el-steps>
     <el-card style="text-align:center"
       ><el-result icon="success" title="成功!" v-if="ifPay"> </el-result>
-      <el-result icon="info" title="请等待支付完成" v-show="ifPaying"></el-result
+      <el-result
+        icon="info"
+        title="请等待支付完成"
+        v-show="ifPaying"
+      ></el-result
       ><el-result
         icon="error"
         title="余额不足"
         description="请前往用户中心>更改账号信息>查看余额充值"
         v-show="ifPayFail"
       ></el-result>
-      <el-button type="danger" @click="dialogFormVisible = true" v-show="ifPaying"
+      <el-button
+        type="danger"
+        @click="dialogFormVisible = true"
+        v-show="ifPaying"
         >输入密码</el-button
       >
       <el-button type="danger" @click="routeTo">返回首页</el-button>
     </el-card>
     <el-dialog title="支付" :visible.sync="dialogFormVisible" width="20vh">
+      <div class="payPrice">￥{{ payPrice }}</div>
       <el-input
         v-model="payCode"
         placeholder="请输入支付密码"
@@ -47,18 +55,17 @@ export default {
       dialogFormVisible: false,
       activeNum: 2,
       ifPay: false,
-      ifPaying:true,
+      ifPaying: true,
       ifPayFail: false,
       money: 0,
       userpayCode: "",
       selectedGoods: {},
+      payPrice: "",
     };
   },
   methods: {
     handleConfirm() {
-      this.selectedGoods = this.$store.state.selectedGoods;
-      let price = this.selectedGoods.price;
-      console.log(price);
+      let price = this.payPrice
       if (this.payCode === "") {
         this.$message({
           type: "error",
@@ -78,15 +85,15 @@ export default {
           message: "余额不足,请充值",
         });
         this.dialogFormVisible = false;
-        this.ifPay = false
-        this.ifPaying = false
+        this.ifPay = false;
+        this.ifPaying = false;
         this.ifPayFail = true;
       } else {
         axios.post("/api/changeCode", { type: 3, code: -price }).then((res) => {
           if (res.data === "success") {
             this.dialogFormVisible = false;
             this.activeNum = 3;
-            this.ifPaying = false
+            this.ifPaying = false;
             this.ifPay = true;
           }
         });
@@ -109,8 +116,14 @@ export default {
       if (res.data !== "notfound" || res.data !== "nouser") {
         this.userpayCode = res.data.payCode;
         this.money = res.data.money;
+        this.selectedGoods = this.$store.state.selectedGoods;
       }
-    });
+    })
+    .then(()=>{
+      let price = this.selectedGoods.price * this.selectedGoods.number;
+        console.log(this.$store.state.selectedGoods)
+        this.payPrice = price;
+    })
   },
   destroyed() {
     this.$store.commit("emptySelectedGoods");
@@ -118,4 +131,11 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.payPrice {
+  text-align: center;
+  color: green;
+  font-size: 20px;
+  font-weight: bolder;
+}
+</style>

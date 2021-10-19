@@ -18,6 +18,7 @@ export default {
   data() {
     return {
       recommands: [],
+      loading: false,
     };
   },
   methods: {
@@ -28,7 +29,17 @@ export default {
       });
       if (found !== undefined) {
         this.$store.commit("setSelectedGoodsInfo", found);
-        this.$router.push("/home/goodsdetail/goodsCommit");
+        this.$router.push("/home");
+        const loading = this.$loading({
+            lock: true,
+            text: "拼命加载中.......",
+            spinner: "el-icon-loading",
+            background: "rgba(0, 0, 0, 0.7)",
+          });
+        setTimeout(() => {
+          loading.close();
+          this.$router.push("/home/goodsdetail/goodsCommit");
+        }, 100);
       }
     },
   },

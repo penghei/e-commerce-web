@@ -1,6 +1,21 @@
 <template>
   <div>
-    <div align="center"></div>
+    <div>
+      <div>排序:</div>
+      <el-select
+        v-model="sortType"
+        placeholder="请选择排序方式"
+        @change="sortGoods"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.value"
+          :label="item.label"
+          :value="item.value"
+        >
+        </el-option>
+      </el-select>
+    </div>
     <div v-for="good in goods" :key="good.id" class="inner">
       <el-card class="goodsCard" shadow="hover">
         <img
@@ -38,6 +53,21 @@ export default {
       selected: 1,
       allGoods: [],
       ifEmpty: false,
+      options: [
+        {
+          label: "按价格从小到大排序",
+          value: "sort1",
+        },
+        {
+          label: "按价格从大到小排序",
+          value: "sort2",
+        },
+        {
+          label: "按名称排序",
+          value: "sort3",
+        },
+      ],
+      sortType: "",
     };
   },
   methods: {
@@ -65,7 +95,7 @@ export default {
       this.$router.push({
         path: `/home/goodsdetail/goodsCommit`,
       });
-      
+
       this.$store.commit("setSelectedGoodsInfo", { id, name, price, picUrl });
     },
     selectGoods() {
@@ -123,6 +153,32 @@ export default {
         this.ifEmpty = false;
       }
     },
+    sortGoods() {
+      const compare = (prop) => (obj1, obj2) => {
+        var val1 = obj1[prop];
+        var val2 = obj2[prop];
+        if (val1 < val2) {
+          return -1;
+        } else if (val1 > val2) {
+          return 1;
+        } else {
+          return 0;
+        }
+      };
+      switch (this.sortType) {
+        case "sort1":
+          this.goods.sort(compare("price"));
+          break;
+        case "sort2":
+          this.goods = this.goods.sort(compare("price")).reverse();
+          break;
+        case "sort3":
+          this.goods.sort(compare("name"));
+          break;
+        default:
+          break;
+      }
+    },
   },
   mounted() {
     this.getGoods();
@@ -147,16 +203,14 @@ export default {
   min-height: 260px;
   min-width: 200px;
 }
-@media screen and (max-width: 1200px){
-  .inner{
+@media screen and (max-width: 1200px) {
+  .inner {
     width: 50%;
   }
 }
-@media screen and (max-width:950px) {
-  .inner{
+@media screen and (max-width: 950px) {
+  .inner {
     width: 100%;
   }
 }
-
-
 </style>

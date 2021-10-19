@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-menu class="elmenu" mode="horizontal" active-text-color="#000000">
+    <el-menu class="elmenu" mode="horizontal">
       <el-menu-item index="1" class="logo">
         <el-image
           style="height:50px;width:50px"
@@ -112,13 +112,5 @@ export default {
 }
 .elmenu > el-menu-item {
   padding-left: 5px;
-}
-@media screen and (max-width: 1465px) {
-  /* .listavatar{
-      left: calc(100%);
-  }
-  .shoppingCar{
-      left: 65vh;
-  } */
 }
 </style>

@@ -3,7 +3,7 @@
     <el-card :style="'width:'+cardWidth+'px'">
       <el-row>
         <el-col :span="10"  class="imgPic">
-          <img :src="picurl" style="height:200px;max-width:300px"/>
+          <img :src="picurl" style="height:200px;max-width:200px"/>
         </el-col>
         <el-col :span="14" class="goodsBlock">
           <div class="detail">
@@ -114,8 +114,11 @@ export default {
   font-size: 5px;
   font-weight: 200;
 }
-@media screen and (max-width:1500px) {
-  .goodsBlock{
+.imgPic{
+  text-align: center;
+}
+@media screen and (max-width:1300px) {
+  .goodsBlock.el-col.el-col-14{
     width: 500px;
   }
 }

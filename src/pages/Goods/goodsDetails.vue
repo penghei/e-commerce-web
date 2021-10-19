@@ -12,13 +12,10 @@
           <el-row>
               <el-col :span="5" style="visibility:hidden">a</el-col>
               <el-col :span="14">
-                  <!-- <goods-block></goods-block>
-                  <br>
-                  <commits></commits> -->
                   <router-view></router-view>
               </el-col>
               <el-col :span="5" >
-                <recommand></recommand>
+                <!-- <recommand></recommand> -->
               </el-col>
           </el-row>
       </div> 
@@ -29,17 +26,13 @@
 </template>
 
 <script>
-// import Commits from '../../components/GoodsDetail/commits.vue';
-// import GoodsBlock from '../../components/GoodsDetail/goodsBlock.vue';
-
-
 import Footer from '../../components/Home/footer.vue';
-import Recommand from '../../components/Home/recommand.vue';
+// import Recommand from '../../components/Home/recommand.vue';
 
 
 export default {
   name: "goodsDetails",
-  components: { Footer, Recommand},
+  components: { Footer, },
   data() {
     return {
       goodsId:'',
