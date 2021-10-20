@@ -10,7 +10,7 @@
 
 <script>
 export default {
-    name:'cascader',
+    name:'Basecascader',
     data() {
         return {
             value:[],

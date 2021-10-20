@@ -55,13 +55,13 @@
 </template>
 
 <script>
-import userDetail from "../../components/User/userDetail.vue";
+import userDetail from "../../components/User/ChangeUserDetail.vue";
 
-import myFooter from "../../components/Home/footer.vue";
+import myFooter from "../../components/Basic/Basefooter.vue";
 
 // import ps from 'pubsub-js'
 import axios from "axios";
-import UserAccount from "../../components/User/userAccount.vue";
+import UserAccount from "../../components/User/ChangeUserAccount.vue";
 // import Pubsub from "pubsub-js"
 export default {
   components: { userDetail, myFooter, UserAccount },

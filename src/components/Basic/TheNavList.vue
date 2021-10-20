@@ -87,11 +87,12 @@ export default {
     this.screenHeight = document.body.clientHeight;
 
     // 监听窗口变化
+    window.onload = () => {
+      this.getWidth();
+    }
     window.onresize = () => {
-      return (() => {
-        // 重新赋值最新窗口数据
+      return (() => {   
         this.screenWidth = document.body.clientWidth;
-        // this.screenHeight = document.body.clientHeight;
         this.getWidth();
       })();
     };

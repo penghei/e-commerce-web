@@ -93,7 +93,7 @@ export default {
     addToShoppingCar() {},
     goodDetail(id, name, price, picUrl) {
       this.$router.push({
-        path: `/home/goodsdetail/goodsCommit`,
+        path: `/home/goodsdetail`,
       });
 
       this.$store.commit("setSelectedGoodsInfo", { id, name, price, picUrl });
@@ -200,7 +200,8 @@ export default {
 }
 .goodsCard {
   margin: 10px;
-  min-height: 260px;
+  min-height: 300px;
+  max-height: 300px;
   min-width: 200px;
 }
 @media screen and (max-width: 1200px) {

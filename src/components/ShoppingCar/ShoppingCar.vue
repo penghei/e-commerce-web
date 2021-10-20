@@ -65,9 +65,8 @@ export default {
       selectedGoods["number"] = number
       console.log(selectedGoods)
       this.$store.commit('setSelectedGoodsInfo',selectedGoods)
-      // this.$store.commit('selectFromCar',selectedGoods);
       this.deletGoods(name);
-      this.$router.push('/home/goodsdetail/address');
+      this.$router.push('/home/address');
     }
   },
   mounted() {

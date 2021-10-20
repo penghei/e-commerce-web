@@ -29,10 +29,10 @@
 <script>
 // import axios from 'axios';
 
-import CheckBox from "../../components/Home/checkBox.vue";
-import myFooter from "../../components/Home/footer.vue";
-import Recommand from '../../components/Home/recommand.vue';
-import ShoppingList from "../../components/Home/shoppingList.vue";
+import CheckBox from "../../components/Home/ShoppingCheckBox.vue";
+import myFooter from "../../components/Basic/Basefooter.vue";
+import Recommand from '../../components/Home/ShoppingRecommand.vue';
+import ShoppingList from "../../components/Home/ShoppingList.vue";
 export default {
   name: "home",
   components: { ShoppingList, CheckBox, myFooter, Recommand },

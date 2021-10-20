@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import Carousel from '../components/Home/carousel.vue'
-import navList from '../components/Home/navList.vue'
+import Carousel from '../components/Basic/Thecarousel.vue'
+import navList from '../components/Basic/ThenavList.vue'
 // import NavList from '../components/Home/navList.vue'
 
 export default {

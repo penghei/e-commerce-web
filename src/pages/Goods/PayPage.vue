@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Pay from "../../components/GoodsDetail/pay.vue";
+import Pay from "../../components/GoodsDetail/Goodspay.vue";
 
 export default {
   name: "parchase",

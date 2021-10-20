@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import myfooter from '../../components/Home/footer.vue';
-import ShoppingCarlist from "../../components/ShoppingCar/shoppingCarlist.vue";
+import myfooter from '../../components/Basic/BaseFooter.vue';
+import ShoppingCarlist from "../../components/ShoppingCar/ShoppingCar.vue";
 export default {
   name: "shoppingCar",
   components: { ShoppingCarlist, myfooter },

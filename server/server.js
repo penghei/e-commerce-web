@@ -236,7 +236,7 @@ app
           foundUser.account.name = userInfo.name;
           fs.writeFile("database.json", JSON.stringify(list), (err) => {
             if (err) throw err;
-            console.log("已修改信息");
+            console.log("已修改信息&emsp;&emsp; ");
             res.end("success");
           });
         } else {

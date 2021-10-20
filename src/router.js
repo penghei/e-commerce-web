@@ -1,13 +1,12 @@
 import VueRouter from "vue-router";
-import login from "./pages/login.vue";
-import home from "./pages/Main/home.vue";
-import userData from "./pages/User/userData.vue";
-import shoppingCar from "./pages/Main/shoppingCar.vue";
-import goodsDetails from "./pages/Goods/goodsDetails.vue";
-import address from "./pages/Goods/myaddress.vue";
-import parchase from "./pages/Goods/parchase.vue";
-import goodsCommit from "./pages/Goods/goodsCommit.vue";
-import allMainPages from "./pages/allMainPages.vue";
+import login from "./pages/LoginPage.vue";
+import home from "./pages/Main/HomePage.vue";
+import userData from "./pages/User/UserInformationPage.vue";
+import shoppingCar from "./pages/ShoppingCar/ShoppingCarPage.vue";
+import goodsDetails from "./pages/Goods/GoodsDetailsPage.vue";
+import address from "./pages/Goods/OrderPage.vue";
+import parchase from "./pages/Goods/PayPage.vue";
+import allMainPages from "./pages/AllMainPage.vue";
 
 const router = new VueRouter({
   mode: "history",
@@ -23,7 +22,6 @@ const router = new VueRouter({
         {
           path: "/home",
           component: home,
-          children: [],
         },
         {
           path: "/home/user",
@@ -32,24 +30,14 @@ const router = new VueRouter({
         {
           path: "/home/goodsdetail",
           component: goodsDetails,
-          children: [
-            {
-              path: "/home/goodsdetail/address",
-              component: address,
-            },
-            {
-              path: "/home/goodsdetail/parchase",
-              component: parchase,
-            },
-            {
-              path: "/home/goodsdetail/goodsCommit",
-              component: goodsCommit,
-            },
-            {
-              path: "/home/goodsdetail",
-              redirect: "goodsCommit",
-            },
-          ],
+        },
+        {
+          path: "/home/address",
+          component: address,
+        },
+        {
+          path: "/home/parchase",
+          component: parchase,
         },
         {
           path: "/home/shoppingCar",

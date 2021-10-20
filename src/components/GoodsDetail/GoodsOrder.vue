@@ -40,9 +40,8 @@
 </template>
 
 <script>
-
-import cascader from "./cascader.vue";
-import OrderGoods from "./orderGoods.vue";
+import cascader from "../Basic/BaseCascader";
+import OrderGoods from "./GoodsConfirm.vue";
 export default {
   components: { cascader, OrderGoods },
   name: "order",
@@ -78,7 +77,7 @@ export default {
         })
         return;
       }
-      this.$router.push("/home/goodsdetail/parchase");
+      this.$router.push("/home/parchase");
       this.$store.commit('setSelectedGoodsInfo',this.selectedGoods)
     },
     exam1() {

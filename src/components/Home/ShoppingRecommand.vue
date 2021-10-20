@@ -38,7 +38,7 @@ export default {
           });
         setTimeout(() => {
           loading.close();
-          this.$router.push("/home/goodsdetail/goodsCommit");
+          this.$router.push("/home/goodsdetail");
         }, 100);
       }
     },
@@ -69,17 +69,17 @@ export default {
   border: 2px solid orange;
   border-radius: 30px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5), 0 0 6px rgba(0, 0, 0, 0.06);
-  max-width: 15vh;
-  float: right;
-  position: fixed;
+  max-width: 18vh;
+  position: sticky;
+  
 }
 .label {
   color: red;
   text-align: center;
 }
 .inner {
-  min-width: 5vh;
-  padding: 10px;
+  min-width: 6vh;
+  padding-top: 10px;
   text-align: center;
 }
 @media screen and (max-width: 500px) {

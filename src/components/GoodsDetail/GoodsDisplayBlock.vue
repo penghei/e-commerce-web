@@ -64,7 +64,7 @@ export default {
       this.goodsnum = 1;
     },
     routeTo() {
-      this.$router.push("/home/goodsdetail/address");
+      this.$router.push("/home/address");
       this.$store.commit('setSelectedGoodsNum',this.goodsnum );
       this.goodsnum = 1;
     },
